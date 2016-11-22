@@ -1,12 +1,16 @@
 package com.jr.weather.util;
 
+import android.net.Uri;
+
 import com.jr.weather.base.ICallBack;
 import com.jr.weather.bean.RequestParams;
 
 import java.io.File;
+import java.util.Map;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * 网络请求
@@ -16,18 +20,19 @@ import okhttp3.OkHttpClient;
 
 public class HttpsUtils {
     private static final long DEFAULT_MILLISECONDS = 10 * 1000l;
-    private static OkHttpClient okHttpClient;
+    private volatile OkHttpClient okHttpClient;
     private static HttpsUtils mInstance;
     private static int cacheSize = 10 * 1024 * 1024;
     private static Cache cache = new Cache(new File("bzh.bmp"), cacheSize);
 
     public HttpsUtils(OkHttpClient okHttpClient) {
-        if (this.okHttpClient == null) {
+        if (okHttpClient == null) {
             this.okHttpClient = new OkHttpClient.Builder().cache(cache).build();
         } else {
             this.okHttpClient = okHttpClient;
         }
     }
+
 
     public static HttpsUtils getInstance() {
         return initHttpsUtils(null);
@@ -44,7 +49,7 @@ public class HttpsUtils {
         return mInstance;
     }
 
-    public static OkHttpClient getOkHttpClient() {
+    public OkHttpClient getOkHttpClient() {
         return okHttpClient;
     }
 
@@ -52,5 +57,8 @@ public class HttpsUtils {
     //先想用法HttpsUtils.get(url,params,callback);
     public static void get(String url, RequestParams params, ICallBack callBack) {
 
+        Request request = new Request.Builder().url(url).get().build();
+
     }
+
 }
