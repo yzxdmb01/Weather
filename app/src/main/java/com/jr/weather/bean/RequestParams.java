@@ -32,6 +32,7 @@ public class RequestParams {
         return this;
     }
 
+
     public String append2Url(String url) {
         if (params == null || params.size() <= 0) {
             return url;
